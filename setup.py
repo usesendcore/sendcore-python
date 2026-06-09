@@ -8,7 +8,7 @@ setup(
     long_description_content_type='text/markdown',
     author='SendCore',
     author_email='support@usesendcore.com',
-    url='https://github.com/usesendcore/sendcore-python',
+    url='https://github.com/sendcore/sendcore-python',
     packages=find_packages(),
     python_requires='>=3.8',
     install_requires=[],
@@ -29,7 +29,7 @@ setup(
     keywords='sendcore email api sdk',
     project_urls={
         'Documentation': 'https://docs.usesendcore.com',
-        'Source': 'https://github.com/usesendcore/sendcore-python',
-        'Tracker': 'https://github.com/usesendcore/sendcore-python/issues',
+        'Source': 'https://github.com/sendcore/sendcore-python',
+        'Tracker': 'https://github.com/sendcore/sendcore-python/issues',
     },
 )
