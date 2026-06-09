@@ -1,0 +1,35 @@
+from setuptools import setup, find_packages
+
+setup(
+    name='sendcore',
+    version='1.0.0',
+    description='Python SDK for the SendCore email API',
+    long_description=open('README.md', encoding='utf-8').read(),
+    long_description_content_type='text/markdown',
+    author='SendCore',
+    author_email='support@usesendcore.com',
+    url='https://github.com/usesendcore/sendcore-python',
+    packages=find_packages(),
+    python_requires='>=3.8',
+    install_requires=[],
+    extras_require={},
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Topic :: Communications :: Email',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+    ],
+    keywords='sendcore email api sdk',
+    project_urls={
+        'Documentation': 'https://docs.usesendcore.com',
+        'Source': 'https://github.com/usesendcore/sendcore-python',
+        'Tracker': 'https://github.com/usesendcore/sendcore-python/issues',
+    },
+)
