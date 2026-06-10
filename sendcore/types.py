@@ -326,3 +326,59 @@ class WebhookPayload:
     event: str
     data: dict[str, Any]
     timestamp: int
+
+
+# ─── Agent Inbox Types ──────────────────────
+
+@dataclass
+class AgentInbox:
+    id: str
+    emailAddress: str
+    status: str = 'ACTIVE'
+    displayName: Optional[str] = None
+    webhookUrl: Optional[str] = None
+    metadata: Optional[dict[str, Any]] = None
+    createdAt: str = ''
+    updatedAt: str = ''
+
+
+@dataclass
+class CreateAgentInboxParams:
+    displayName: Optional[str] = None
+    webhookUrl: Optional[str] = None
+    metadata: Optional[dict[str, Any]] = None
+
+
+@dataclass
+class InboundEmail:
+    id: str
+    inboxId: str
+    fromAddress: str
+    toAddress: str
+    subject: Optional[str] = None
+    fromName: Optional[str] = None
+    bodyText: Optional[str] = None
+    bodyHtml: Optional[str] = None
+    parsedOtp: Optional[str] = None
+    messageId: Optional[str] = None
+    inReplyTo: Optional[str] = None
+    references: Optional[str] = None
+    isRead: bool = False
+    receivedAt: str = ''
+
+
+@dataclass
+class SendAsAgentParams:
+    to: str | list[str]
+    subject: str
+    body: str
+    inReplyTo: Optional[str] = None
+
+
+@dataclass
+class PaginatedEmails:
+    data: list[InboundEmail] = field(default_factory=list)
+    page: int = 1
+    limit: int = 50
+    total: int = 0
+    totalPages: int = 0

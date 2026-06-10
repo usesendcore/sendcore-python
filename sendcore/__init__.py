@@ -33,6 +33,11 @@ from .types import (
     WorkflowExecutionLog,
     CreateWorkflowParams,
     WebhookPayload,
+    AgentInbox,
+    CreateAgentInboxParams,
+    InboundEmail,
+    SendAsAgentParams,
+    PaginatedEmails,
 )
 
 __all__ = [
@@ -71,4 +76,9 @@ __all__ = [
     'WorkflowExecutionLog',
     'CreateWorkflowParams',
     'WebhookPayload',
+    'AgentInbox',
+    'CreateAgentInboxParams',
+    'InboundEmail',
+    'SendAsAgentParams',
+    'PaginatedEmails',
 ]

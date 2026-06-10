@@ -19,6 +19,7 @@ from .types import (
     EmailTemplate, CreateTemplateParams,
     Suppression, AddSuppressionParams,
     ApiKey, CreateApiKeyParams, CreateApiKeyResponse,
+    AgentInbox, CreateAgentInboxParams, InboundEmail, SendAsAgentParams, PaginatedEmails,
 )
 from .errors import SendCoreError
 
@@ -62,6 +63,7 @@ class SendCore:
         self.analytics = AnalyticsResource(self)
         self.webhooks = WebhooksResource()
         self.workflows = WorkflowsResource(self)
+        self.agent_inboxes = AgentInboxesResource(self)
 
     def _request(
         self,
@@ -461,6 +463,54 @@ class WorkflowsResource:
         return self._client._request(
             'POST', f'/organizations/workflows/{workflow_id}/test', body
         )
+
+
+class AgentInboxesResource:
+    def __init__(self, client: SendCore) -> None:
+        self._client = client
+
+    def create(self, params: CreateAgentInboxParams | dict[str, Any]) -> AgentInbox:
+        payload = params.__dict__ if isinstance(params, CreateAgentInboxParams) else dict(params)
+        result = self._client._request('POST', '/agent-inboxes', payload)
+        return AgentInbox(**result)
+
+    def list(self) -> list[AgentInbox]:
+        result = self._client._request('GET', '/agent-inboxes')
+        return [AgentInbox(**i) for i in result]
+
+    def get(self, id: str) -> AgentInbox:
+        result = self._client._request('GET', f'/agent-inboxes/{id}')
+        return AgentInbox(**result)
+
+    def delete(self, id: str) -> None:
+        self._client._request('DELETE', f'/agent-inboxes/{id}')
+
+    def set_webhook(self, id: str, url: str) -> AgentInbox:
+        result = self._client._request('PUT', f'/agent-inboxes/{id}/webhook', {'url': url})
+        return AgentInbox(**result)
+
+    def get_emails(self, id: str, page: Optional[int] = None, limit: Optional[int] = None) -> PaginatedEmails:
+        params: dict[str, Any] = {}
+        if page is not None:
+            params['page'] = page
+        if limit is not None:
+            params['limit'] = limit
+        result = self._client._request('GET', f'/agent-inboxes/{id}/emails', params=params or None)
+        return PaginatedEmails(**result)
+
+    def get_email(self, inbox_id: str, email_id: str) -> InboundEmail:
+        result = self._client._request('GET', f'/agent-inboxes/{inbox_id}/emails/{email_id}')
+        return InboundEmail(**result)
+
+    def mark_as_read(self, inbox_id: str, email_id: str) -> None:
+        self._client._request('PUT', f'/agent-inboxes/{inbox_id}/emails/{email_id}/read')
+
+    def send_email(self, id: str, params: SendAsAgentParams | dict[str, Any]) -> Any:
+        payload = params.__dict__ if isinstance(params, SendAsAgentParams) else dict(params)
+        to = payload.get('to')
+        if isinstance(to, str):
+            payload['to'] = [to]
+        return self._client._request('POST', f'/agent-inboxes/{id}/send', payload)
 
 
 def _default_json(o: Any) -> Any:
