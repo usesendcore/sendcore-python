@@ -489,12 +489,14 @@ class AgentInboxesResource:
         result = self._client._request('PUT', f'/agent-inboxes/{id}/webhook', {'url': url})
         return AgentInbox(**result)
 
-    def get_emails(self, id: str, page: Optional[int] = None, limit: Optional[int] = None) -> PaginatedEmails:
+    def get_emails(self, id: str, page: Optional[int] = None, limit: Optional[int] = None, search: Optional[str] = None) -> PaginatedEmails:
         params: dict[str, Any] = {}
         if page is not None:
             params['page'] = page
         if limit is not None:
             params['limit'] = limit
+        if search is not None:
+            params['search'] = search
         result = self._client._request('GET', f'/agent-inboxes/{id}/emails', params=params or None)
         return PaginatedEmails(**result)
 
@@ -511,6 +513,24 @@ class AgentInboxesResource:
         if isinstance(to, str):
             payload['to'] = [to]
         return self._client._request('POST', f'/agent-inboxes/{id}/send', payload)
+
+    def list_threads(self, inbox_id: str, page: Optional[int] = None, limit: Optional[int] = None) -> PaginatedThreads:
+        params: dict[str, Any] = {}
+        if page is not None:
+            params['page'] = page
+        if limit is not None:
+            params['limit'] = limit
+        result = self._client._request('GET', f'/agent-inboxes/{inbox_id}/threads', params=params or None)
+        return PaginatedThreads(**result)
+
+    def get_thread(self, inbox_id: str, thread_id: str) -> Any:
+        return self._client._request('GET', f'/agent-inboxes/{inbox_id}/threads/{thread_id}')
+
+    def get_thread_by_email(self, inbox_id: str, email_id: str) -> Any:
+        return self._client._request('GET', f'/agent-inboxes/{inbox_id}/emails/{email_id}/thread')
+
+    def get_attachment(self, inbox_id: str, email_id: str, attachment_id: str) -> Any:
+        return self._client._request('GET', f'/agent-inboxes/{inbox_id}/emails/{email_id}/attachments/{attachment_id}')
 
 
 def _default_json(o: Any) -> Any:

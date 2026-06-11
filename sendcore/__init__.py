@@ -36,8 +36,11 @@ from .types import (
     AgentInbox,
     CreateAgentInboxParams,
     InboundEmail,
+    InboundThread,
+    InboundAttachment,
     SendAsAgentParams,
     PaginatedEmails,
+    PaginatedThreads,
 )
 
 __all__ = [
@@ -79,6 +82,9 @@ __all__ = [
     'AgentInbox',
     'CreateAgentInboxParams',
     'InboundEmail',
+    'InboundThread',
+    'InboundAttachment',
     'SendAsAgentParams',
     'PaginatedEmails',
+    'PaginatedThreads',
 ]

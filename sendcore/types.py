@@ -347,6 +347,17 @@ class CreateAgentInboxParams:
     displayName: Optional[str] = None
     webhookUrl: Optional[str] = None
     metadata: Optional[dict[str, Any]] = None
+    domainId: Optional[str] = None
+    localPrefix: Optional[str] = None
+
+
+@dataclass
+class InboundAttachment:
+    id: str
+    emailId: str
+    filename: str
+    mimeType: str
+    size: int
 
 
 @dataclass
@@ -368,16 +379,36 @@ class InboundEmail:
 
 
 @dataclass
+class InboundThread:
+    id: str
+    inboxId: str
+    subject: Optional[str] = None
+    emailCount: int = 0
+    lastSnippet: Optional[str] = None
+    lastActivityAt: str = ''
+    isRead: bool = False
+
+
+@dataclass
 class SendAsAgentParams:
     to: str | list[str]
     subject: str
     body: str
-    inReplyTo: Optional[str] = None
+    threadId: Optional[str] = None
 
 
 @dataclass
 class PaginatedEmails:
     data: list[InboundEmail] = field(default_factory=list)
+    page: int = 1
+    limit: int = 50
+    total: int = 0
+    totalPages: int = 0
+
+
+@dataclass
+class PaginatedThreads:
+    data: list[InboundThread] = field(default_factory=list)
     page: int = 1
     limit: int = 50
     total: int = 0
